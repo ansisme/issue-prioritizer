@@ -6,7 +6,7 @@ import Profile from '../profile'
 import SearchIssue from "../SearchIssue";
 
 const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';
-const supabaseKey = 'your-supabase-key';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRic2Vkb3Bob25xcHpybnNlcGxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk3MTA1NDUsImV4cCI6MjAxNTI4NjU0NX0.vMPEc1zF9PKvA5UCCMUutR__Z-cpfUY9pKzUsYJZCvE';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function App() {
@@ -22,6 +22,8 @@ export default function App() {
   });
   const [searchedRepo, setSearchedRepo] = useState(null);
   const [repoIssues, setRepoIssues] = useState([]);
+  //new 
+  const [issuePriorities, setIssuePriorities] = useState({}); //new
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,12 +59,10 @@ export default function App() {
       }
     };
 
-    fetchData();
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
-
+      fetchData();
     return () => subscription.unsubscribe();
   }, []);
 
@@ -73,12 +73,42 @@ export default function App() {
       try {
         const response = await fetch(`https://api.github.com/repos/${githubDetails.username}/${repoName}/issues`);
         const issuesData = await response.json();
-        setRepoIssues(issuesData);
-      } catch (error) {
+
+        //new
+        // Fetch issue priorities from the Flask API
+        const prioritiesResponse = await fetch('http://localhost:5000/train_and_evaluate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ issues: issuesData }),
+        });
+        const prioritiesData = await prioritiesResponse.json();
+        console.log("Priorities Data:", prioritiesData); // Log the response
+
+        // Map issue IDs to their corresponding priorities
+        if (Array.isArray(prioritiesData)) {
+          // Map issue IDs to their corresponding priorities
+          const prioritiesMap = {};
+          prioritiesData.forEach((issue) => {
+            prioritiesMap[issue.id] = issue.priority_label;
+          });
+          //new
+          setRepoIssues(issuesData);
+          setIssuePriorities(prioritiesMap);
+
+          console.log("Repo Issues:", issuesData);
+          console.log("Issue Priorities:", prioritiesMap);
+        } else {
+          console.error('Priorities data is not an array:', prioritiesData);
+        }
+      }
+      catch (error) {
         console.error("Error fetching issues:", error);
       }
     } else {
       setRepoIssues([]);
+      setIssuePriorities({});
     }
   };
 
@@ -112,7 +142,11 @@ export default function App() {
             <h2>Issues for {searchedRepo}</h2>
             <ul>
               {repoIssues.map((issue) => (
-                <li key={issue.id}>{issue.title}</li>
+                <li key={issue.id}>
+                  <p>{issue.title}</p>
+                  <p>Priority: {issuePriorities[issue.id]}</p>
+                </li>
+
               ))}
             </ul>
           </div>
