@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 #get the access token
-access_token = os.getenv("GITHUB_ACCESS_TOKEN")
+access_token = os.getenv("GITHUB_ACCESS_TOKEN2")
 
 
 
@@ -102,7 +102,7 @@ def calculate_top_labels(issues):
 
 
 # Function to fetch issues from a repository
-def fetch_issues_from_github(repo_owner, repo_name, state='all', per_page=50, max_issues=50):
+def fetch_issues_from_github(repo_owner, repo_name, state='all', per_page=30, max_issues=1):
     # Same logic as your data retrieval script
     base_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/issues'
     params = {
