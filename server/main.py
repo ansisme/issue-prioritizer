@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 #get the access token
-access_token = os.getenv("GITHUB_ACCESS_TOKEN2")
+access_token = os.getenv("plsgod")
 
 
 
@@ -102,7 +102,7 @@ def calculate_top_labels(issues):
 
 
 # Function to fetch issues from a repository
-def fetch_issues_from_github(repo_owner, repo_name, state='all', per_page=30, max_issues=1):
+def fetch_issues_from_github(repo_owner, repo_name, state='all', per_page=100):
     # Same logic as your data retrieval script
     base_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/issues'
     params = {
@@ -116,16 +116,18 @@ def fetch_issues_from_github(repo_owner, repo_name, state='all', per_page=30, ma
     issues = []
     issues_saved = 0
 
-    while issues_saved < max_issues:
+    while True:
         response = requests.get(base_url, params=params, headers=headers)
 
         if response.status_code == 200:
             new_issues = response.json()
-
+            if not new_issues:
+                # No more issues to fetch, break out of the loop
+                break
             for issue in new_issues:
                 created_at = datetime.strptime(issue['created_at'], '%Y-%m-%dT%H:%M:%SZ')
-                if issues_saved < max_issues:
-                    data = {
+                # if issues_saved < max_issues:
+                data = {
                         'id': issue['id'],
                         'title': issue['title'],
                         'state': issue['state'],
@@ -141,27 +143,20 @@ def fetch_issues_from_github(repo_owner, repo_name, state='all', per_page=30, ma
                         'Top_label_3': 0,  # Placeholder, will be updated later
                         'priority': '',
                     }
-                    data.update(extract_subfields(issue))
-                    issues.append(data)
-                    # issues_saved += 1
-                    # Print or log only the relevant fields
-                    # print(f"Issue {issues_saved}: {data}")
-                    # print()
-                    # print(f"Predicted Priority: {data['priority']}")
-                    # print()
-                     # Use the model to predict priorities for each issue
-                    predicted_issue = predict_priority(data)
+                data.update(extract_subfields(issue))
+                issues.append(data)
+                predicted_issue = predict_priority(data)
 
-                    # Print or log only the relevant fields after prediction
-                    print(f"Issue {issues_saved + 1}: {predicted_issue}")
-                    print(f"Predicted Priority: {predicted_issue['priority']}")
-                    print()
-                    issues_saved += 1
+                # Print or log only the relevant fields after prediction
+                print(f"Issue {issues_saved + 1}: {predicted_issue}")
+                print(f"Predicted Priority: {predicted_issue['priority']}")
+                print()
+                issues_saved += 1
 
 
-                if 'rel="next"' not in response.headers.get('Link', ''):
-                    print("No next link found. Breaking out of loop.")
-                    break
+            if 'rel="next"' not in response.headers.get('Link', ''):
+                print("No next link found. Breaking out of loop.")
+                break
             params['page'] += 1
         else:
             print(f"Failed to retrieve issues. Status code: {response.status_code}")
