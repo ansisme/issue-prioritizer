@@ -97,9 +97,6 @@ def calculate_top_labels(issues):
         for i, label in enumerate(top_labels):
             issue[f'Top_label_{i+1}'] = 1 if label in issue['label_names'] else 0
 
-    # for issue in issues:
-    #     print(f"Top labels for issue {issue['id']}: {issue['top_labels']}")
-
 
 # Function to fetch issues from a repository
 def fetch_issues_from_github(repo_owner, repo_name, state='all', per_page=100):
@@ -136,11 +133,11 @@ def fetch_issues_from_github(repo_owner, repo_name, state='all', per_page=100):
                         'closed_at': issue['closed_at'],
                         'comments': issue['comments'],
                         'pr_associated': has_associated_pull_request(issue),
-                        'comment_priority': 0,  # Placeholder, will be updated later
-                        'top_labels': [],  # Placeholder, will be updated later
-                        'Top_label_1': 0,  # Placeholder, will be updated later
-                        'Top_label_2': 0,  # Placeholder, will be updated later
-                        'Top_label_3': 0,  # Placeholder, will be updated later
+                        'comment_priority': 0,   
+                        'top_labels': [],   
+                        'Top_label_1': 0,   
+                        'Top_label_2': 0,   
+                        'Top_label_3': 0,  
                         'priority': '',
                     }
                 data.update(extract_subfields(issue))
