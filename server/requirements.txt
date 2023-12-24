@@ -3,3 +3,4 @@ Flask-CORS
 requests
 pandas
 scikit-learn==1.2.2
+gunicon
