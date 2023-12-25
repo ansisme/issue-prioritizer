@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
 import Profile from '../components/profile'
 import SearchIssue from "../SearchIssue";
-import axios from "axios";
+import SignIn from '../pages/SignIn';
 
 const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRic2Vkb3Bob25xcHpybnNlcGxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk3MTA1NDUsImV4cCI6MjAxNTI4NjU0NX0.vMPEc1zF9PKvA5UCCMUutR__Z-cpfUY9pKzUsYJZCvE';
@@ -110,22 +108,8 @@ export default function App() {
 
   if (!session) {
     return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <Auth
-            supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            providers={["github"]}
-          />
-        </div>
+      <div>
+        <SignIn supabase={supabase} />
       </div>
     );
   } else {
