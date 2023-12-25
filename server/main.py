@@ -9,12 +9,11 @@ import statistics
 import os
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 #get the access token
 access_token = os.getenv("plsgod")
-
-
 
 # Load the pre-trained model
 model = pickle.load(open('model.pkl', 'rb'))
