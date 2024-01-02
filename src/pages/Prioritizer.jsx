@@ -38,7 +38,7 @@ export default function App() {
           const githubResponse = await fetch(`https://api.github.com/users/${githubUsername}`);
           const githubData = await githubResponse.json();
 
-          const reposResponse = await fetch(`https://api.github.com/users/${githubUsername}/repos`);
+          const reposResponse = await fetch(`https://api.github.com/users/${githubUsername}/repos?type=all`);
           const reposData = await reposResponse.json();
 
           const updatedGithubDetails = {
@@ -72,8 +72,11 @@ export default function App() {
       try {
         const response = await fetch(`https://api.github.com/repos/${githubDetails.username}/${repoName}/issues`);
         const issuesData = await response.json();
-        console.log("issues data:", issuesData)
-
+       
+        console.log("issues data:", issuesData);
+         console.log(githubDetails.username, repoName)
+         console.log('hi')
+        
         const prioritiesResponse = await fetch('https://priority-server.onrender.com/predict', {
           method: 'POST',
           headers: {
@@ -83,6 +86,7 @@ export default function App() {
             repo_owner: githubDetails.username,
             repo_name: repoName,
             issues: issuesData,
+            forks: true,
           }),
         });
 
