@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 #get the access token
-access_token = os.getenv("plsgod")
+access_token = os.getenv("plsgod2")
 
 # Load the pre-trained model
 model = pickle.load(open('model.pkl', 'rb'))
