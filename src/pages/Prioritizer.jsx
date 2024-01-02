@@ -92,6 +92,7 @@ export default function App() {
 
         const prioritiesData = await prioritiesResponse.json();
         console.log("Priorities Data:", prioritiesData);
+        console.log("Length: ", prioritiesData.issues.length)
 
         if (prioritiesData.issues && Array.isArray(prioritiesData.issues)) {
           setRepoIssues(issuesData);
@@ -121,7 +122,7 @@ export default function App() {
       <div>
         <Profile {...githubDetails} />
         <SearchIssue onSearch={handleSearch} />
-        {searchedRepo && repoIssues.length > 0 ? (
+        {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
           <div>
             <h2>Issues for {searchedRepo}</h2>
             <ol>
