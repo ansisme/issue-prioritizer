@@ -4,8 +4,8 @@ import Profile from '../components/profile'
 import SearchIssue from "../SearchIssue";
 import SignIn from '../pages/SignIn';
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRic2Vkb3Bob25xcHpybnNlcGxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk3MTA1NDUsImV4cCI6MjAxNTI4NjU0NX0.vMPEc1zF9PKvA5UCCMUutR__Z-cpfUY9pKzUsYJZCvE';
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -74,7 +74,7 @@ export default function App() {
         const issuesData = await response.json();
         console.log("issues data:", issuesData)
 
-        const prioritiesResponse = await fetch('https://priority-server.onrender.com', {
+        const prioritiesResponse = await fetch('https://priority-server.onrender.com/predict', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -95,14 +95,14 @@ export default function App() {
         } else {
           console.error('Priorities data is not an array:', prioritiesData);
           setRepoIssues([]);
-          setPrioritiesData({ issues: [] }); // Reset prioritiesData
+          setPrioritiesData({ issues: [] });
         }
       } catch (error) {
         console.error("Error fetching issues:", error);
       }
     } else {
       setRepoIssues([]);
-      setPrioritiesData({ issues: [] }); // Reset prioritiesData when no repo is searched
+      setPrioritiesData({ issues: [] });
     }
   };
 
