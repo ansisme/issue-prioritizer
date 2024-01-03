@@ -4,9 +4,7 @@ import Profile from "../components/Profile/profile";
 import SearchIssue from "../components/Search_Issues/SearchIssue";
 import SignIn from '../pages/SignIn';
 
-// const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';/
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
-// const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRic2Vkb3Bob25xcHpybnNlcGxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk3MTA1NDUsImV4cCI6MjAxNTI4NjU0NX0.vMPEc1zF9PKvA5UCCMUutR__Z-cpfUY9pKzUsYJZCvE';
 const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
