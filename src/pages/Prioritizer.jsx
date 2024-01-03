@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import Profile from '../components/profile'
-import SearchIssue from "../SearchIssue";
+import Profile from "../components/Profile/profile";
+import SearchIssue from "../components/Search_Issues/SearchIssue";
 import SignIn from '../pages/SignIn';
 
-const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRic2Vkb3Bob25xcHpybnNlcGxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk3MTA1NDUsImV4cCI6MjAxNTI4NjU0NX0.vMPEc1zF9PKvA5UCCMUutR__Z-cpfUY9pKzUsYJZCvE';
-
+// const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';/
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+// const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRic2Vkb3Bob25xcHpybnNlcGxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk3MTA1NDUsImV4cCI6MjAxNTI4NjU0NX0.vMPEc1zF9PKvA5UCCMUutR__Z-cpfUY9pKzUsYJZCvE';
+const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function App() {
@@ -72,12 +73,12 @@ export default function App() {
       try {
         const response = await fetch(`https://api.github.com/repos/${githubDetails.username}/${repoName}/issues`);
         const issuesData = await response.json();
-       
+
         console.log("issues data:", issuesData);
-         console.log(githubDetails.username, repoName)
-         console.log('hi')
-        
-        const prioritiesResponse = await fetch('https://priority-server.onrender.com/predict', {
+        console.log(githubDetails.username, repoName)
+        console.log('hi')
+        //  https://priority-server.onrender.com/predict
+        const prioritiesResponse = await fetch('http://localhost:5000', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -119,29 +120,37 @@ export default function App() {
     );
   } else {
     return (
-      <div>
-        <Profile {...githubDetails} />
-        <SearchIssue onSearch={handleSearch} />
-        {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
-          <div>
-            <h2>Issues for {searchedRepo}</h2>
-            <ol>
-              {prioritiesData.issues.map((issue) => (
-                <li key={issue.id}>
-                  <p>Title {issue.title}</p>
-                  <p>ID: {issue.id}</p>
-                  <p>State: {issue.state}</p>
-                  <p>Comments: {issue.comments}</p>
-                  <p>Created_at: {issue.created_at}</p>
-                  <p>Priority: {issue.priority}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        ) : searchedRepo ? (
-          <p>No issues in this repo, enter the correct repo name</p>
-        ) : null}
-        <button onClick={() => supabase.auth.signOut()}>Sign out</button>
+
+      <div className="flex-col items-center">
+        <div className="mb-4">
+          <Profile {...githubDetails} />
+        </div>
+        <div className="mb-4">
+          <SearchIssue onSearch={handleSearch} />
+          {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
+            <div>
+              <h2>Issues for {searchedRepo}</h2>
+              <ol>
+                {prioritiesData.issues.map((issue) => (
+                  <li key={issue.id}>
+                    <p>Title {issue.title}</p>
+                    <p>ID: {issue.id}</p>
+                    <p>State: {issue.state}</p>
+                    <p>Comments: {issue.comments}</p>
+                    <p>Created_at: {issue.created_at}</p>
+                    <p>Priority: {issue.priority}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ) : searchedRepo ? (
+            <p className="mt-2 font-robotomono text-sm font-normal ml-[31.5%] text-titleColor">No issues found in this repository / Enter the correct repository name</p>
+          ) : null}
+        </div>
+        <div className="font-robotomono text-sm font-normal ml-[31.5%] text-buttonColor hover:text-titleColor">
+          <button onClick={() => supabase.auth.signOut()}>Sign out</button>
+        </div>
+
       </div>
     );
   }
