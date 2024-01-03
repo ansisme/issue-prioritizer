@@ -173,11 +173,11 @@ def predict_priority(issue):
     output_column = 'priority'
     # Mapping function for priorities
     def map_priority(priority):
-        if priority == 3:
+        if priority == 1:
             return "High"
         elif priority == 2:
             return "Medium"
-        elif priority == 1:
+        elif priority == 3:
             return "Low"
         else:
             return "Unknown"
