@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
 import Profile from '../components/profile'
 import SearchIssue from "../SearchIssue";
+import SignIn from '../pages/SignIn';
 
 const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRic2Vkb3Bob25xcHpybnNlcGxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk3MTA1NDUsImV4cCI6MjAxNTI4NjU0NX0.vMPEc1zF9PKvA5UCCMUutR__Z-cpfUY9pKzUsYJZCvE';
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function App() {
@@ -38,7 +38,7 @@ export default function App() {
           const githubResponse = await fetch(`https://api.github.com/users/${githubUsername}`);
           const githubData = await githubResponse.json();
 
-          const reposResponse = await fetch(`https://api.github.com/users/${githubUsername}/repos`);
+          const reposResponse = await fetch(`https://api.github.com/users/${githubUsername}/repos?type=all`);
           const reposData = await reposResponse.json();
 
           const updatedGithubDetails = {
@@ -72,23 +72,27 @@ export default function App() {
       try {
         const response = await fetch(`https://api.github.com/repos/${githubDetails.username}/${repoName}/issues`);
         const issuesData = await response.json();
-        console.log("issues data:", issuesData)
-
-        const prioritiesResponse = await fetch('https://priority-server.onrender.com', {
+       
+        console.log("issues data:", issuesData);
+         console.log(githubDetails.username, repoName)
+         console.log('hi')
+        
+        const prioritiesResponse = await fetch('https://priority-server.onrender.com/predict', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
           },
           body: JSON.stringify({
             repo_owner: githubDetails.username,
             repo_name: repoName,
             issues: issuesData,
+            forks: true,
           }),
         });
 
         const prioritiesData = await prioritiesResponse.json();
         console.log("Priorities Data:", prioritiesData);
+        console.log("Length: ", prioritiesData.issues.length)
 
         if (prioritiesData.issues && Array.isArray(prioritiesData.issues)) {
           setRepoIssues(issuesData);
@@ -96,35 +100,21 @@ export default function App() {
         } else {
           console.error('Priorities data is not an array:', prioritiesData);
           setRepoIssues([]);
-          setPrioritiesData({ issues: [] }); // Reset prioritiesData
+          setPrioritiesData({ issues: [] });
         }
       } catch (error) {
         console.error("Error fetching issues:", error);
       }
     } else {
       setRepoIssues([]);
-      setPrioritiesData({ issues: [] }); // Reset prioritiesData when no repo is searched
+      setPrioritiesData({ issues: [] });
     }
   };
 
   if (!session) {
     return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <Auth
-            supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            providers={["github"]}
-          />
-        </div>
+      <div>
+        <SignIn supabase={supabase} />
       </div>
     );
   } else {
@@ -132,7 +122,7 @@ export default function App() {
       <div>
         <Profile {...githubDetails} />
         <SearchIssue onSearch={handleSearch} />
-        {searchedRepo && repoIssues.length > 0 ? (
+        {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
           <div>
             <h2>Issues for {searchedRepo}</h2>
             <ol>
