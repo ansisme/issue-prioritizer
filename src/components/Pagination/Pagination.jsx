@@ -1,45 +1,3 @@
-// import React from 'react';
-// import './pagination.css';
-// function Pagination({ currentPage, totalPages, onNextPage, onPrevPage }) {
-//   const handlePrevPage = () => {
-//     if (currentPage > 1) {
-//       onPrevPage();
-//     }
-//   };
-
-//   const handleNextPage = () => {
-//     if (currentPage < totalPages) {
-//       onNextPage();
-//     }
-//   };
-
-//   return (
-//     <div className="text-center h-auto p-1 ml-12">
-//       <button
-//         onClick={handlePrevPage}
-//         disabled={currentPage === 1}
-//         className={`pagination-button ${currentPage === 1 ? 'disabled' : ''}`}
-//       >
-//         <span className="decoration-none text-sm cursor-pointer text-buttonColor">
-//           Previous
-//         </span>
-//       </button>
-//       <button
-//         onClick={handleNextPage}
-//         disabled={currentPage === totalPages}
-//         className={`pagination-button ${currentPage === totalPages ? 'disabled' : ''}`}
-//       >
-//         <span className="p-1 ml-3 text-center justify-between border-2 bg-inherit">
-//           Next
-//         </span>
-//       </button>
-//     </div>
-//   );
-// }
-
-// export default Pagination;
-
-
 import React from "react";
 
 export default function Pagination({
@@ -84,7 +42,7 @@ export default function Pagination({
           </button>
           <button
             className={`p-1 ml-3 text-center justify-between align-center border-none border-8 bg-inherit ${
-              isLastPage ? "cursor-not-allowed text-buttonColor " : "cursor-pointer "
+              isLastPage ? "cursor-not-allowed opacity-50 " : "cursor-pointer "
             }`}
             onClick={() => !isLastPage && paginateFront()}
             disabled={isLastPage}

@@ -151,7 +151,7 @@ export default function App() {
                         <div className="text-paragraphColor text-sm flex-col">
                           <p>State: {issue.state}</p>
                           <p>Comments: {issue.comments}</p>
-                          <p className="font-bold">Priority: {issue.priority}</p>
+                          <p className="font-bold text-titleColor">Priority: {issue.priority}</p>
                         </div>
                       </div>
                     </li>
@@ -170,7 +170,7 @@ export default function App() {
             <p className="mt-2  text-sm font-normal ml-[31.5%] text-titleColor">No issues found in this repository / Enter the correct repository name</p>
           ) : null}
         </div>
-        <div className=" text-sm font-normal ml-[31.5%] text-buttonColor hover:text-titleColor">
+        <div className=" text-md mb-10 font-normal ml-[31.5%] text-buttonColor hover:text-titleColor">
           <button onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
 
