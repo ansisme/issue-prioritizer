@@ -4,7 +4,7 @@ import Profile from "../components/Profile/profile";
 import SearchIssue from "../components/Search_Issues/SearchIssue";
 import SignIn from '../pages/SignIn';
 
-const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -76,7 +76,7 @@ export default function App() {
         console.log(githubDetails.username, repoName)
         console.log('hi')
         //  https://priority-server.onrender.com/predict
-        const prioritiesResponse = await fetch('http://localhost:5000', {
+        const prioritiesResponse = await fetch('https://priority-server.onrender.com/predict', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -126,26 +126,34 @@ export default function App() {
         <div className="mb-4">
           <SearchIssue onSearch={handleSearch} />
           {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
-            <div>
-              <h2>Issues for {searchedRepo}</h2>
-              <ol>
-                {prioritiesData.issues.map((issue) => (
-                  <li key={issue.id}>
-                    <p>Title {issue.title}</p>
-                    <p>ID: {issue.id}</p>
-                    <p>State: {issue.state}</p>
-                    <p>Comments: {issue.comments}</p>
-                    <p>Created_at: {issue.created_at}</p>
-                    <p>Priority: {issue.priority}</p>
-                  </li>
-                ))}
-              </ol>
+            <div className="">
+              <div className="">
+                <p className="font-normal text-subtitleColor ml-[31.5%] mt-2"> Total issues-{repoIssues.length + prioritiesData.issues.length}</p>
+                <ol className="ml-[30%]">
+                  {prioritiesData.issues.map((issue) => (
+                    <li key={issue.id} className=" m-5 p-5 bg-cardColor rounded-md  w-[54.5%] h-[30%] ">
+                      <div className="flex-col">
+                        <div className="flex justify-between">
+                          <p className="text-headingColor float-left font-semibold text-xl">Title: {issue.title}</p>
+                          <p className="mt-2 justify-between float-right text-titleColor text-sm ">ID: {issue.id}</p>
+                        </div>
+                        <div className="text-paragraphColor text-sm flex-col">
+                          <p>State: {issue.state}</p>
+                          <p>Comments: {issue.comments}</p>
+                          <p>Priority: {issue.priority}</p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
             </div>
           ) : searchedRepo ? (
-            <p className="mt-2 font-robotomono text-sm font-normal ml-[31.5%] text-titleColor">No issues found in this repository / Enter the correct repository name</p>
+            <p className="mt-2  text-sm font-normal ml-[31.5%] text-titleColor">No issues found in this repository / Enter the correct repository name</p>
           ) : null}
         </div>
-        <div className="font-robotomono text-sm font-normal ml-[31.5%] text-buttonColor hover:text-titleColor">
+        <div className=" text-sm font-normal ml-[31.5%] text-buttonColor hover:text-titleColor">
           <button onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
 

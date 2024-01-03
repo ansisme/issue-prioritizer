@@ -171,6 +171,16 @@ def predict_priority(issue):
 
     # Define the columns for output feature
     output_column = 'priority'
+    # Mapping function for priorities
+    def map_priority(priority):
+        if priority == 3:
+            return "High"
+        elif priority == 2:
+            return "Medium"
+        elif priority == 1:
+            return "Low"
+        else:
+            return "Unknown"
     try:
         # Align with the training data (drop irrelevant columns)
         columns_to_drop = ['id', 'updated_at', 'created_at', 'closed_at', 'title', 'state', 'assignee_names', 'label_names', 'top_labels']
@@ -181,15 +191,13 @@ def predict_priority(issue):
         predicted_priority = model.predict(issue_data[input_columns])[0]
 
         # Add the predicted priority to the issue
-        issue[output_column] = int(predicted_priority)
+        issue[output_column] = map_priority(predicted_priority)
 
         return issue
 
     except Exception as e:
         print(f"Exception in predict_priority for issue {issue['id']}: {str(e)}")
         raise  # Re-raise the exception to stop further execution
-
-
 
 # Endpoint for predicting priority based on issues from a GitHub repository
 @app.route('/predict', methods=['POST'])
