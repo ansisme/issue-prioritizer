@@ -4,7 +4,7 @@ import Profile from "../components/Profile/profile";
 import SearchIssue from "../components/Search_Issues/SearchIssue";
 import SignIn from '../pages/SignIn';
 
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseUrl = 'https://dbsedophonqpzrnseplm.supabase.co';
 const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
