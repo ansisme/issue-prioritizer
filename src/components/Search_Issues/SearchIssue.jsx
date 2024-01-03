@@ -26,10 +26,9 @@ const SearchIssues = ({ onSearch }) => {
           placeholder="Enter repository names who's issues you want to prioritize"
           value={repoName}
           onChange={(e) => setRepoName(e.target.value)}
-          className="text-sm mt-2 bg-inputColor rounded-sm p-2 border border-borderColor w-[54.5%] font-robotomono font-normal text-labelColor"
+          className="text-sm mt-2 bg-inputColor rounded-sm p-2 border border-borderColor w-[54.5%] font-robotomono font-normal text-subtitleColor"
         />
       </div>
-
     </div>
   );
 };

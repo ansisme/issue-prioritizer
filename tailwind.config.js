@@ -20,6 +20,7 @@ module.exports = {
         'labelColor': '#3A536B',
         'buttonColor': '#7B96B2',
         'borderColor': '#1C2F41',
+        'cardColor': '#112131',
       },
       scale: {
         flip: '-1',
