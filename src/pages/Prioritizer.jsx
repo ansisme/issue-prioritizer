@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import Profile from "../components/Profile/profile";
 import SearchIssue from "../components/Search_Issues/SearchIssue";
 import SignIn from '../pages/SignIn';
-
+import Pagination from "../components/Pagination/Pagination";
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -24,7 +24,8 @@ export default function App() {
   const [prioritiesData, setPrioritiesData] = useState({
     issues: [],
   });
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [issuesperpage] = useState(10);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -96,6 +97,7 @@ export default function App() {
         if (prioritiesData.issues && Array.isArray(prioritiesData.issues)) {
           setRepoIssues(issuesData);
           setPrioritiesData(prioritiesData);
+          
         } else {
           console.error('Priorities data is not an array:', prioritiesData);
           setRepoIssues([]);
@@ -109,6 +111,15 @@ export default function App() {
       setPrioritiesData({ issues: [] });
     }
   };
+
+  // Get current issues
+  const indexOfLastIssue = currentPage * issuesperpage;
+  const indexOfFirstIssue = indexOfLastIssue - issuesperpage;
+  const currentIssues = prioritiesData.issues.slice(indexOfFirstIssue, indexOfLastIssue);
+
+  // Change page
+  const paginateFront = () => setCurrentPage(currentPage + 1);
+  const paginateBack = () => setCurrentPage(currentPage - 1);
 
   if (!session) {
     return (
@@ -128,32 +139,38 @@ export default function App() {
           {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
             <div className="">
               <div className="">
-                <p className="font-normal text-subtitleColor ml-[31.5%] mt-2"> Total issues-{repoIssues.length + prioritiesData.issues.length}</p>
+                <p className="font-normal text-subtitleColor ml-[31.5%] mt-2"> Total issues-{prioritiesData.issues.length}</p>
                 <ol className="ml-[30%]">
-                  {prioritiesData.issues.map((issue) => (
+                  {currentIssues.map((issue) => (
                     <li key={issue.id} className=" m-5 p-5 bg-cardColor rounded-md  w-[54.5%] h-[30%] ">
                       <div className="flex-col">
                         <div className="flex justify-between">
-                          <p className="text-headingColor float-left font-semibold text-xl">Title: {issue.title}</p>
+                          <p className="text-headingColor float-left font-semibold text-xl mb-2">Title: {issue.title}</p>
                           <p className="mt-2 justify-between float-right text-titleColor text-sm ">ID: {issue.id}</p>
                         </div>
                         <div className="text-paragraphColor text-sm flex-col">
                           <p>State: {issue.state}</p>
                           <p>Comments: {issue.comments}</p>
-                          <p>Priority: {issue.priority}</p>
+                          <p className="font-bold text-titleColor">Priority: {issue.priority}</p>
                         </div>
                       </div>
                     </li>
                   ))}
                 </ol>
               </div>
-
+              <Pagination
+                issuesperpage={issuesperpage}
+                totalIssues={prioritiesData.issues.length}
+                paginateBack={paginateBack}
+                paginateFront={paginateFront}
+                currentPage={currentPage}
+              />
             </div>
           ) : searchedRepo ? (
             <p className="mt-2  text-sm font-normal ml-[31.5%] text-titleColor">No issues found in this repository / Enter the correct repository name</p>
           ) : null}
         </div>
-        <div className=" text-sm font-normal ml-[31.5%] text-buttonColor hover:text-titleColor">
+        <div className=" text-md mb-10 font-normal ml-[31.5%] text-buttonColor hover:text-titleColor">
           <button onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
 
