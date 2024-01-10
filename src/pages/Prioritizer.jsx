@@ -97,7 +97,7 @@ export default function App() {
         if (prioritiesData.issues && Array.isArray(prioritiesData.issues)) {
           setRepoIssues(issuesData);
           setPrioritiesData(prioritiesData);
-          
+
         } else {
           console.error('Priorities data is not an array:', prioritiesData);
           setRepoIssues([]);
@@ -146,18 +146,22 @@ export default function App() {
           {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
             <div className="">
               <div className="">
-                <p className="font-normal text-subtitleColor ml-[31.5%] mt-2"> Total issues-{prioritiesData.issues.length}</p>
-                <ol className="ml-[30%]">
+                <p className="font-normal text-subtitleColor ml-[31.5%] max-sm:ml-4 mt-2 max-sm:mt-1 max-sm:text-md"> Total issues-{prioritiesData.issues.length}</p>
+                <ol className="ml-[30%] max-sm:ml-2">
                   {currentIssues.map((issue) => (
-                    <li key={issue.id} className=" m-5 p-5 bg-cardColor rounded-md  w-[54.5%] h-[30%] ">
+                    <li key={issue.id} className=" m-5 max-sm:m-2 p-5 max-sm:p-3 bg-cardColor rounded-md  w-[54.5%] max-sm:w-[90%] h-auto ">
                       <div className="flex-col">
                         <div className="flex justify-between">
-                          <p className="text-headingColor float-left font-semibold text-xl mb-2">Title: {issue.title}</p>
-                          <p className="mt-2 justify-between float-right text-titleColor text-sm ">ID: {issue.id}</p>
+                          <p className="text-headingColor float-left font-semibold text-xl max-sm:text-md mb-2 max-sm:leading-4">Title: {issue.title}</p>
+
+                          <p className="mt-2 justify-between float-right text-titleColor text-sm max-sm:text-xxs max-sm:leading-4">
+                            ID: {issue.id}
+                          </p>
                         </div>
-                        <div className="text-paragraphColor text-sm flex-col">
+                        <div className="text-paragraphColor text-sm max-sm:text-xxs flex-col max-sm:leading-4">
                           <p>State: {issue.state}</p>
                           <p>Comments: {issue.comments}</p>
+                          <p>Labels: {issue.label_names.join(', ')}</p>
                           <p className="font-bold text-titleColor">Priority: {issue.priority}</p>
                         </div>
                       </div>
@@ -174,10 +178,10 @@ export default function App() {
               />
             </div>
           ) : searchedRepo ? (
-            <p className="mt-2  text-sm font-normal ml-[31.5%] text-titleColor">No issues found in this repository / Enter the correct repository name</p>
+            <p className="mt-2  text-sm max-sm:text-xxs font-normal ml-[31.5%] max-sm:ml-4 text-titleColor">No issues found in this repository / Enter the correct repository name</p>
           ) : null}
         </div>
-        <div className=" text-md mb-10 font-normal ml-[31.5%] text-buttonColor hover:text-titleColor">
+        <div className=" text-md mb-10 font-normal ml-[31.5%] max-sm:ml-4 text-buttonColor hover:text-titleColor">
           <button onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
 

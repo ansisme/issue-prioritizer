@@ -9,47 +9,54 @@ const Profile = ({ avatar, name, email, followers, following, username, reposito
       <div className="flex-col mx-auto">
         <div className="z-10 absolute inset-x-0 top-[8%] justify-center align-center flex">
           <div className="flex-col">
-            <div className="flex ml-[30%] mb-4">
-              <img src={logo} alt="logo" className="flex mr-2" />
-              <img src={logo} alt="logo" className="flex flip" />
+            <div className="flex ml-[30%] mb-4 max-sm:mb-6">
+              <img src={logo} alt="logo" className="flex mr-2 max-sm:w-[20%] max-sm:h-[20%]" />
+              <img src={logo} alt="logo" className="flex flip max-sm:w-[20%] max-sm:h-[20%]" />
             </div>
 
             <Title
-              className="justify-center align-center" />
+              className="" />
           </div>
         </div>
         <div className="z-0 relative">
           <img src={Cover}
-            className="w-screen"
+            className="w-screen h-[40vh] object-cover"
             alt="Cover" />
         </div>
-        
-        <div className="flex z-10  justify-center items-center align-center">
-          <div className="bg-profileColor max-h-md max-w-xl mb-20 rounded-xl left-1/2  transform -translate-x-1/2  absolute justify-center items-center align-center">
+
+        <div className="flex z-10 justify-center items-center align-center">
+          <div className="bg-profileColor max-h:auto max-w-xl max-sm:w-[95%] mb-20 max-sm:mb-8 rounded-xl left-1/2 transform -translate-x-1/2  absolute">
             <div className="flex">
-              <img
-                src={avatar}
-                className="w-[30%] p-5 flex rounded-3xl"
-                alt={`${username}'s avatar`} />
-              <div className="font-robotomono p-5">
-                <p className="text-2xl font-bold text-headingColor mb-2"> {name}</p>
-                <div className="text-sm font-semibold text-paragraphColor ">
-                  <p>{username}</p>
-                  <p>{email}</p>
-                  <p>{followers} followers</p>
-                  <p>{following} following</p>
+              <div className="flex">
+                <img
+                  src={avatar}
+                  className="w-[30%] p-5  rounded-3xl max-sm:rounded-xl max-sm:w-50vh "
+                  alt={`${username}'s avatar`} />
+              </div>
+
+              <div className="flex max-sm:ml-[-50%]">
+                <div className="font-robotomono p-5 ">
+                  <p className="text-2xl max-sm:text-md font-bold text-headingColor mb-2 max-sm:mb-0 leading-5"> {name}</p>
+                  <div className="text-sm max-sm:text-xxs font-semibold text-paragraphColor ">
+                    <p>{username}</p>
+                    <p>{email}</p>
+                    <p>{followers} followers</p>
+                    <p>{following} following</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex p-5">
+
+              <div className="flex p-5 max-sm:p-2 text-right">
                 <a
                   href={`https://github.com/${username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex"
+                  className=""
                 >
-                  <p className="text-titleColor font-robotomono font-semibold text-sm">
+                  <p className="text-titleColor font-robotomono font-semibold text-sm max-sm:text-xxs ">
                     GITHUB
                   </p>
+
                   <div className="ml-1 mt-[3px]">
                     <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g id="Icon" clip-path="url(#clip0_1802_12)">
