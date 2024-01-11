@@ -11,9 +11,9 @@ export default function Pagination({
   const isLastPage = currentPage * issuesperpage >= totalIssues;
 
   return (
-    <div className="text-center h-auto p-1 ml-12 max-sm:ml-4">
+    <div className="text-center h-auto p-1 ">
       <div>
-        <p className="text-sm  max-sm:text-md text-paragraphColor">
+        <p className="text-sm max-sm:text-md text-paragraphColor">
           Showing{" "}
           <span className="font-medium">
             {(currentPage * issuesperpage - issuesperpage) + 1}

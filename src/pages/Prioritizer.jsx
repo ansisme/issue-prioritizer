@@ -146,19 +146,19 @@ export default function App() {
           {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
             <div className="">
               <div className="">
-                <p className="font-normal text-subtitleColor ml-[31.5%] max-sm:ml-4 mt-2 max-sm:mt-1 max-sm:text-md"> Total issues-{prioritiesData.issues.length}</p>
-                <ol className="ml-[30%] max-sm:ml-2">
+                <p className="font-normal text-subtitleColor ml-[31.5%] max-sm:ml-4 max-md:ml-[5%] max-lg:ml-[25%] max-xl:ml-[25%] mt-2 max-sm:mt-1 max-sm:text-md max-md:text-sm "> Total issues-{prioritiesData.issues.length}</p>
+                <ol className="ml-[30%] max-sm:ml-2 max-md:ml-[3%] max-lg:ml-[23%] max-xl:ml-[23%]">
                   {currentIssues.map((issue) => (
-                    <li key={issue.id} className=" m-5 max-sm:m-2 p-5 max-sm:p-3 bg-cardColor rounded-md  w-[54.5%] max-sm:w-[90%] h-auto ">
+                    <li key={issue.id} className=" m-5 p-5 max-sm:m-3 max-md:m-4 max-sm:p-3 bg-cardColor rounded-md  w-[54.5%] max-sm:w-[90%] max-md:w-[95%] max-md:w-[65%] max-lg:w-[65%] max-xl:w-[65%] h-auto ">
                       <div className="flex-col">
                         <div className="flex justify-between">
-                          <p className="text-headingColor float-left font-semibold text-xl max-sm:text-md mb-2 max-sm:leading-4">Title: {issue.title}</p>
+                          <p className="text-headingColor float-left font-semibold text-xl max-sm:text-md max-md:text-sm mb-2 max-sm:leading-4 max-md:leading-5">Title: {issue.title}</p>
 
-                          <p className="mt-2 justify-between float-right text-titleColor text-sm max-sm:text-xxs max-sm:leading-4">
+                          <p className="mt-2 justify-between float-right text-titleColor text-sm max-sm:text-xxs max-md:text-md">
                             ID: {issue.id}
                           </p>
                         </div>
-                        <div className="text-paragraphColor text-sm max-sm:text-xxs flex-col max-sm:leading-4">
+                        <div className="text-paragraphColor text-sm max-sm:text-xxs max-md:text-md flex-col max-sm:leading-4 max-md:leading-5 ">
                           <p>State: {issue.state}</p>
                           <p>Comments: {issue.comments}</p>
                           <p>Labels: {issue.label_names.join(', ')}</p>
@@ -178,13 +178,12 @@ export default function App() {
               />
             </div>
           ) : searchedRepo ? (
-            <p className="mt-2  text-sm max-sm:text-xxs font-normal ml-[31.5%] max-sm:ml-4 text-titleColor">No issues found in this repository / Enter the correct repository name</p>
+            <p className="mt-2  text-sm max-sm:text-xxs max-md:text-md font-normal ml-[31.5%]  max-sm:ml-4 max-md:ml-[25%] text-titleColor">No issues found in this repository / Enter the correct repository name</p>
           ) : null}
         </div>
-        <div className=" text-md mb-10 font-normal ml-[31.5%] max-sm:ml-4 text-buttonColor hover:text-titleColor">
+        <div className=" text-sm max-sm:text-md mb-10 font-normal ml-[31.5%] max-sm:ml-4 max-md:ml-[5%] max-lg:ml-[25%] max-xl:ml-[25%] text-buttonColor hover:text-titleColor">
           <button onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
-
       </div>
     );
   }
