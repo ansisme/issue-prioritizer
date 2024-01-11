@@ -11,9 +11,9 @@ export default function Pagination({
   const isLastPage = currentPage * issuesperpage >= totalIssues;
 
   return (
-    <div className="text-center h-auto p-1 ml-12">
+    <div className="text-center h-auto p-1 ">
       <div>
-        <p className="text-sm text-paragraphColor">
+        <p className="text-sm max-sm:text-md text-paragraphColor">
           Showing{" "}
           <span className="font-medium">
             {(currentPage * issuesperpage - issuesperpage) + 1}
@@ -28,11 +28,11 @@ export default function Pagination({
       <nav className="block"></nav>
       <div>
         <nav
-          className="text-sm text-paragraphColor hover:text-titleColor"
+          className="text-sm max-sm:text-md text-paragraphColor hover:text-titleColor"
           aria-label="Pagination"
         >
           <button
-            className={`p-1 ml-3 text-center justify-between align-center border-none border-8 bg-inherit ${
+            className={`p-1 ml-3 max-sm:ml-0  max-sm:p-0 text-center justify-between align-center border-none border-8 max-sm:border-4  bg-inherit ${
               isFirstPage ? "cursor-not-allowed opacity-50" : "cursor-pointer"
             }`}
             onClick={() => !isFirstPage && paginateBack()}
@@ -41,7 +41,7 @@ export default function Pagination({
             <span className="text-paragraphColor hover:text-titleColor">Previous</span>
           </button>
           <button
-            className={`p-1 ml-3 text-center justify-between align-center border-none border-8 bg-inherit ${
+            className={`p-1 ml-3 max-sm:ml-2 text-center justify-between align-center border-none border-8 bg-inherit ${
               isLastPage ? "cursor-not-allowed opacity-50 " : "cursor-pointer "
             }`}
             onClick={() => !isLastPage && paginateFront()}
