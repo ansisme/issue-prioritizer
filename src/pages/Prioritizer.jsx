@@ -75,8 +75,6 @@ export default function App() {
 
         console.log("issues data:", issuesData);
         console.log(githubDetails.username, repoName)
-        console.log('hi')
-        //  https://priority-server.onrender.com/predict
         const prioritiesResponse = await fetch('https://priority-server.onrender.com/predict', {
           method: 'POST',
           headers: {
@@ -112,12 +110,11 @@ export default function App() {
     }
   };
 
-  // Get current issues
+
   const indexOfLastIssue = currentPage * issuesperpage;
   const indexOfFirstIssue = indexOfLastIssue - issuesperpage;
   const currentIssues = prioritiesData.issues.slice(indexOfFirstIssue, indexOfLastIssue);
 
-  // Change page
   const paginateFront = () => setCurrentPage(currentPage + 1);
   const paginateBack = () => setCurrentPage(currentPage - 1);
 
