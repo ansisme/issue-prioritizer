@@ -24,13 +24,13 @@ const Profile = ({ avatar, name, email, followers, following, username, reposito
             alt="Cover" />
         </div>
 
-        <div className="flex z-10 justify-center items-center align-center">
-          <div className="bg-profileColor max-h-md max-w-xl max-sm:w-[95%] max-md:w-[95%] mb-8 max-sm:mb-8 max-md:mb-8 max-lg:mb-10 rounded-xl left-1/2 transform -translate-x-1/2  absolute justify-center items-center align-center">
+        <div className="z-10 flex items-center justify-center">
+          <div className="bg-profileColor max-h-md max-w-xl max-sm:w-[95%] max-md:w-[95%] max-lg:w-[65%] mb-8 max-sm:mb-8 max-md:mb-8 max-lg:mb-10 rounded-xl left-1/2 transform -translate-x-1/2  absolute justify-center items-center align-center">
             <div className="flex">
               <div className="flex">
                 <img
                   src={avatar}
-                  className="w-[30%] max-lg:w-[30%] p-5 rounded-3xl max-sm:p-3 max-md:p-3 max-lg:p-4 "
+                  className="w-[30%] max-xxs:hidden max-lg:w-[30%] p-5 rounded-3xl max-sm:p-3 max-md:p-3 max-lg:p-4 "
                   alt={`${username}'s avatar`} />
                 {/* </div> */}
 
