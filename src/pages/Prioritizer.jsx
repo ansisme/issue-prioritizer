@@ -75,7 +75,7 @@ export default function App() {
 
         console.log("issues data:", issuesData);
         console.log(githubDetails.username, repoName)
-        const prioritiesResponse = await fetch('https://priority-server.onrender.com/predict', {
+        const prioritiesResponse = await fetch('http://localhost:5000/predict', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
