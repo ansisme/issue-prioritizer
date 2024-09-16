@@ -4,14 +4,12 @@ import Profile from "../components/Profile/profile";
 import SearchIssue from "../components/Search_Issues/SearchIssue";
 import SignIn from '../pages/SignIn';
 import Pagination from "../components/Pagination/Pagination";
-import { TailSpin } from "react-loader-spinner";
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function App() {
   const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [githubDetails, setGithubDetails] = useState({
     avatar: "",
     name: "",
@@ -31,7 +29,6 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true); // Start loading
         const { data: { session } } = await supabase.auth.getSession();
         setSession(session);
 
@@ -51,15 +48,13 @@ export default function App() {
             followers: githubData.followers,
             following: githubData.following,
             username: githubUsername,
-            repositories: Array.isArray(reposData) ? reposData.map(repo => repo.name) : [],
+            repositories: reposData.map(repo => repo.name),
           };
 
           setGithubDetails(updatedGithubDetails);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-      }finally {
-        setLoading(false);
       }
     };
 
@@ -75,13 +70,12 @@ export default function App() {
 
     if (repoName) {
       try {
-        setLoading(true); // Start loading
         const response = await fetch(`https://api.github.com/repos/${githubDetails.username}/${repoName}/issues`);
         const issuesData = await response.json();
 
         console.log("issues data:", issuesData);
         console.log(githubDetails.username, repoName)
-        const prioritiesResponse = await fetch('http://localhost:5000/predict', {
+        const prioritiesResponse = await fetch('https://priority-server.onrender.com/predict', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -109,9 +103,6 @@ export default function App() {
         }
       } catch (error) {
         console.error("Error fetching issues:", error);
-      }
-      finally {
-        setLoading(false); // Stop loading regardless of success or failure
       }
     } else {
       setRepoIssues([]);
@@ -149,17 +140,13 @@ export default function App() {
         </div>
         <div className="mb-4">
           <SearchIssue onSearch={handleSearch} />
-          {loading ? (
-            <div className="h-screen flex mt-5 justify-center">
-              <TailSpin color="#3294F8" radius={"4px"} height={"24px"} width={"24px"} />
-            </div>
-          ) : searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
+          {searchedRepo && repoIssues.length > 0 || prioritiesData.issues.length > 0 ? (
             <div className="">
               <div className="">
-                <p className="font-normal text-subtitleColor ml-[31.5%] max-sm:ml-4 max-md:ml-[5%] max-lg:ml-[18%] max-xl:ml-[25%] mt-2 max-sm:mt-1 max-sm:text-md max-md:text-sm "> Total issues-{prioritiesData.issues.length}</p>
-                <ol className="ml-[30%] max-sm:ml-2 max-md:ml-[3%] max-lg:ml-[16%] max-xl:ml-[23%]">
+                <p className="font-normal text-subtitleColor ml-[31.5%] max-sm:ml-4 max-md:ml-[5%] max-lg:ml-[25%] max-xl:ml-[25%] mt-2 max-sm:mt-1 max-sm:text-md max-md:text-sm "> Total issues-{prioritiesData.issues.length}</p>
+                <ol className="ml-[30%] max-sm:ml-2 max-md:ml-[3%] max-lg:ml-[23%] max-xl:ml-[23%]">
                   {currentIssues.map((issue) => (
-                    <li key={issue.id} className=" m-5 p-5 max-sm:m-3 max-md:m-4 max-sm:p-3 bg-cardColor rounded-md  w-[54.5%] max-sm:w-[90%] max-md:w-[95%] max-lg:w-[75%] max-xl:w-[65%] h-auto ">
+                    <li key={issue.id} className=" m-5 p-5 max-sm:m-3 max-md:m-4 max-sm:p-3 bg-cardColor rounded-md  w-[54.5%] max-sm:w-[90%] max-md:w-[95%] max-md:w-[65%] max-lg:w-[65%] max-xl:w-[65%] h-auto ">
                       <div className="flex-col">
                         <div className="flex justify-between">
                           <p className="text-headingColor float-left font-semibold text-xl max-sm:text-md max-md:text-sm mb-2 max-sm:leading-4 max-md:leading-5">Title: {issue.title}</p>
@@ -191,7 +178,7 @@ export default function App() {
             <p className="mt-2  text-sm max-sm:text-xxs max-md:text-md font-normal ml-[31.5%]  max-sm:ml-4 max-md:ml-[25%] text-titleColor">No issues found in this repository / Enter the correct repository name</p>
           ) : null}
         </div>
-        <div className=" text-sm max-sm:text-md mb-10 font-normal ml-[31.5%] max-sm:ml-4 max-md:ml-[5%] max-lg:ml-[18%] max-xl:ml-[25%] text-buttonColor hover:text-titleColor">
+        <div className=" text-sm max-sm:text-md mb-10 font-normal ml-[31.5%] max-sm:ml-4 max-md:ml-[5%] max-lg:ml-[25%] max-xl:ml-[25%] text-buttonColor hover:text-titleColor">
           <button onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
       </div>
